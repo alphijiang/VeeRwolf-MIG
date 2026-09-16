@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07121f"/><stop offset="1" stop-color="#142a3c"/></linearGradient>
+    <linearGradient id="head" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0e7490"/><stop offset="1" stop-color="#0f766e"/></linearGradient>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity=".35"/></filter>
+    <style>
+      .title{font:700 42px 'DejaVu Sans',sans-serif;fill:#f8fafc}.sub{font:400 18px 'DejaVu Sans',sans-serif;fill:#a8bdcc}
+      .h{font:700 21px 'DejaVu Sans',sans-serif;fill:#edfaff}.l{font:700 17px 'DejaVu Sans',sans-serif;fill:#f8fafc}
+      .t{font:400 14px 'DejaVu Sans',sans-serif;fill:#cad9e4}.m{font:500 14px 'DejaVu Sans Mono',monospace;fill:#dff6fa}.x{font:400 12px 'DejaVu Sans',sans-serif;fill:#aabfcd}
+      .panel{fill:#0d2233;stroke:#3e6379;stroke-width:1.7;rx:18;filter:url(#s)}.row{fill:#142f42;stroke:#34586d;stroke-width:1;rx:8}
+    </style>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg2)"/>
+  <text x="72" y="67" class="title">VeeRwolf EH2 Implementation Reference</text>
+  <text x="74" y="99" class="sub">Address map • clock domains • interrupt model • debug path • implemented and inactive interfaces</text>
+
+  <!-- memory map -->
+  <rect x="60" y="145" width="560" height="840" class="panel"/>
+  <rect x="60" y="145" width="560" height="65" rx="18" fill="url(#head)"/><text x="88" y="186" class="h">MEMORY &amp; ADDRESS MAP</text>
+  <text x="88" y="246" class="l">VeeRwolf external address regions</text>
+  <g>
+    <rect x="88" y="268" width="504" height="72" class="row"/><text x="108" y="297" class="l">DDR2 RAM window</text><text x="108" y="322" class="m">0x00000000–0x07FFFFFF  •  128 MiB</text>
+    <rect x="88" y="352" width="504" height="72" class="row"/><text x="108" y="381" class="l">Boot ROM</text><text x="108" y="406" class="m">0x80000000–0x80000FFF  •  4 KiB</text>
+    <rect x="88" y="436" width="504" height="72" class="row"/><text x="108" y="465" class="l">System controller</text><text x="108" y="490" class="m">0x80001000–0x8000103F</text>
+    <rect x="88" y="520" width="504" height="72" class="row"/><text x="108" y="549" class="l">Simple SPI</text><text x="108" y="574" class="m">0x80001040–0x8000107F</text>
+    <rect x="88" y="604" width="504" height="72" class="row"/><text x="108" y="633" class="l">UART 16550</text><text x="108" y="658" class="m">0x80002000–0x80002FFF</text>
+  </g>
+  <text x="88" y="722" class="l">EH2 tightly-coupled resources</text>
+  <g>
+    <rect x="88" y="744" width="504" height="72" class="row"/><text x="108" y="773" class="l">ICCM • instruction tightly-coupled memory</text><text x="108" y="798" class="m">0xEE000000–0xEE00FFFF  •  64 KiB</text>
+    <rect x="88" y="828" width="504" height="72" class="row"/><text x="108" y="857" class="l">DCCM • data tightly-coupled memory</text><text x="108" y="882" class="m">0xF0040000–0xF0047FFF  •  32 KiB</text>
+    <rect x="88" y="912" width="504" height="54" class="row"/><text x="108" y="945" class="l">PIC base</text><text x="300" y="945" class="m">0xF00C0000 • 128 sources</text>
+  </g>
+
+  <!-- clock/bus -->
+  <rect x="660" y="145" width="575" height="400" class="panel"/>
+  <rect x="660" y="145" width="575" height="65" rx="18" fill="url(#head)"/><text x="688" y="186" class="h">CLOCK AND BUS DOMAINS</text>
+  <rect x="690" y="244" width="160" height="74" class="row"/><text x="713" y="274" class="l">Board clock</text><text x="713" y="298" class="m">100 MHz</text>
+  <rect x="905" y="244" width="220" height="74" class="row"/><text x="928" y="274" class="l">LiteDRAM PLL / PHY</text><text x="928" y="298" class="m">user_clk = 100 MHz</text>
+  <rect x="905" y="356" width="220" height="74" class="row"/><text x="928" y="386" class="l">EH2 core domain</text><text x="928" y="410" class="m">clk_core = 40 MHz</text>
+  <path d="M850 281H905" stroke="#55d7e5" stroke-width="4"/><path d="M1015 318V356" stroke="#b998ff" stroke-width="4"/>
+  <text x="690" y="470" class="t">• AXI CDC uses asynchronous Gray-pointer FIFOs between 40 and 100 MHz.</text>
+  <text x="690" y="497" class="t">• IFU, LSU and System Bus feed one generated AXI4 interconnect.</text>
+  <text x="690" y="524" class="x">CLOCK_PERIOD=100 is EH2 generator/testbench metadata, not the FPGA clock constraint.</text>
+
+  <!-- interrupts/harts -->
+  <rect x="660" y="585" width="575" height="400" class="panel"/>
+  <rect x="660" y="585" width="575" height="65" rx="18" fill="url(#head)"/><text x="688" y="626" class="h">DUAL-HART &amp; INTERRUPT MODEL</text>
+  <rect x="690" y="684" width="230" height="94" class="row"/><text x="714" y="716" class="l">Hart 0</text><text x="714" y="742" class="t">Runs after reset</text><text x="714" y="764" class="x">mhartid = 0</text>
+  <rect x="965" y="684" width="230" height="94" class="row"/><text x="989" y="716" class="l">Hart 1</text><text x="989" y="742" class="t">Started by CSR 0x7FC bit 1</text><text x="989" y="764" class="x">mhartid = 1</text>
+  <rect x="690" y="812" width="505" height="72" class="row"/><text x="714" y="841" class="l">Shared EH2 PIC</text><text x="714" y="866" class="t">UART, SPI, sw_irq3 and sw_irq4 enter extintsrc_req</text>
+  <text x="690" y="916" class="t">• One platform timer interrupt is replicated to both hart timer inputs.</text>
+  <text x="690" y="943" class="t">• PIC sources can be delegated independently to either hart.</text>
+  <text x="690" y="970" class="x">soft_int[1:0] is tied inactive: VeeRwolf currently has no memory-mapped MSI block.</text>
+
+  <!-- debug & status -->
+  <rect x="1275" y="145" width="585" height="840" class="panel"/>
+  <rect x="1275" y="145" width="585" height="65" rx="18" fill="url(#head)"/><text x="1303" y="186" class="h">DEBUG, I/O AND IMPLEMENTATION STATUS</text>
+  <text x="1303" y="246" class="l">External debug path</text>
+  <rect x="1303" y="268" width="529" height="115" class="row"/>
+  <text x="1327" y="299" class="l">FTDI JTAG → official dmi_wrapper → EH2 Debug Module</text>
+  <text x="1327" y="327" class="t">OpenOCD abstract access • four hardware triggers</text>
+  <text x="1327" y="354" class="x">Modified OpenOCD supports 8/16/32-bit ICCM debug memory access.</text>
+  <text x="1303" y="430" class="l">Board I/O behavior</text>
+  <rect x="1303" y="451" width="529" height="145" class="row"/>
+  <text x="1327" y="482" class="t">• Switches are synchronized into clk_core and read through GPIO.</text>
+  <text x="1327" y="510" class="t">• GPIO[15:0] drives the 16 LEDs.</text>
+  <text x="1327" y="538" class="t">• Switch 0 selects CPU UART TX or LiteDRAM test UART TX.</text>
+  <text x="1327" y="566" class="t">• SPI clock reaches the flash through STARTUPE2.</text>
+  <text x="1303" y="643" class="l">Configured and active</text>
+  <g>
+    <rect x="1303" y="666" width="255" height="45" rx="8" fill="#164c49"/><text x="1324" y="694" class="t">✓ Dual-hart EH2</text>
+    <rect x="1577" y="666" width="255" height="45" rx="8" fill="#164c49"/><text x="1598" y="694" class="t">✓ ICCM / DCCM ECC</text>
+    <rect x="1303" y="723" width="255" height="45" rx="8" fill="#164c49"/><text x="1324" y="751" class="t">✓ Fast interrupt redirect</text>
+    <rect x="1577" y="723" width="255" height="45" rx="8" fill="#164c49"/><text x="1598" y="751" class="t">✓ External DDR2</text>
+  </g>
+  <text x="1303" y="817" class="l">Deliberately inactive / not implemented</text>
+  <g>
+    <rect x="1303" y="840" width="255" height="45" rx="8" fill="#4d342d"/><text x="1324" y="868" class="t">— Instruction cache</text>
+    <rect x="1577" y="840" width="255" height="45" rx="8" fill="#4d342d"/><text x="1598" y="868" class="t">— DMA AXI input</text>
+    <rect x="1303" y="897" width="255" height="45" rx="8" fill="#4d342d"/><text x="1324" y="925" class="t">— SoC MSI registers</text>
+    <rect x="1577" y="897" width="255" height="45" rx="8" fill="#4d342d"/><text x="1598" y="925" class="t">— Debug progbuf</text>
+  </g>
+  <text x="1304" y="969" class="x">Source: current V17 RTL and generated EH2 Nexys configuration.</text>
+</svg>

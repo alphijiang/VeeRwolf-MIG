@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/><stop offset="1" stop-color="#10263b"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f5970"/><stop offset="1" stop-color="#123d59"/>
+    </linearGradient>
+    <linearGradient id="bus" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#115e75"/><stop offset="1" stop-color="#0d9488"/>
+    </linearGradient>
+    <marker id="arrowCyan" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#55d7e5"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#ffb55b"/>
+    </marker>
+    <style>
+      .title{font:700 42px 'DejaVu Sans',sans-serif;fill:#f8fafc;letter-spacing:.5px}
+      .subtitle{font:400 18px 'DejaVu Sans',sans-serif;fill:#9fb5c8}
+      .section{font:700 19px 'DejaVu Sans',sans-serif;fill:#d9f7fb;letter-spacing:.8px}
+      .label{font:700 17px 'DejaVu Sans',sans-serif;fill:#f8fafc}
+      .small{font:400 14px 'DejaVu Sans',sans-serif;fill:#c6d5e1}
+      .tiny{font:400 12px 'DejaVu Sans',sans-serif;fill:#aebfcd}
+      .micro{font:400 11px 'DejaVu Sans',sans-serif;fill:#aebfcd}
+      .mono{font:500 13px 'DejaVu Sans Mono',monospace;fill:#dcecf5}
+      .box{stroke:#4c7189;stroke-width:1.5}
+      .wire{fill:none;stroke:#55d7e5;stroke-width:3;marker-end:url(#arrowCyan)}
+      .wire2{fill:none;stroke:#55d7e5;stroke-width:3;marker-start:url(#arrowCyan);marker-end:url(#arrowCyan)}
+      .irq{fill:none;stroke:#ffb55b;stroke-width:2.5;stroke-dasharray:8 5;marker-end:url(#arrowOrange)}
+      .clock{fill:none;stroke:#b790ff;stroke-width:2.5;stroke-dasharray:4 4;marker-end:url(#arrowCyan)}
+    </style>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <path d="M0 118H1920" stroke="#2b5268" stroke-width="1"/>
+  <text x="74" y="68" class="title">VeeRwolf EH2 — Nexys A7 / Nexys 4 DDR System Architecture</text>
+  <text x="76" y="99" class="subtitle">RTL-derived implementation view • VeeR EH2 1.4 dual-hart • 40 MHz core • 100 MHz DDR user domain</text>
+
+  <!-- external I/O -->
+  <rect x="55" y="160" width="245" height="815" rx="20" fill="#0a1b2b" stroke="#33566d" stroke-width="2"/>
+  <text x="82" y="198" class="label">BOARD &amp; EXTERNAL I/O</text>
+  <g>
+    <rect x="82" y="235" width="190" height="82" rx="13" class="box" fill="#172c3d"/><text x="105" y="268" class="label">100 MHz OSC</text><text x="105" y="294" class="small">Clock + reset</text>
+    <rect x="82" y="350" width="190" height="100" rx="13" class="box" fill="#172c3d"/><text x="105" y="382" class="label">FTDI / OpenOCD</text><text x="105" y="407" class="small">JTAG on Pmod JC</text><text x="105" y="431" class="tiny">TCK • TMS • TDI • TDO</text>
+    <rect x="82" y="483" width="190" height="85" rx="13" class="box" fill="#172c3d"/><text x="105" y="517" class="label">UART</text><text x="105" y="543" class="small">RX / TX • 115200</text>
+    <rect x="82" y="602" width="190" height="85" rx="13" class="box" fill="#172c3d"/><text x="105" y="636" class="label">SPI FLASH</text><text x="105" y="662" class="micro">SCLK • CS • MOSI • MISO</text>
+    <rect x="82" y="721" width="190" height="85" rx="13" class="box" fill="#172c3d"/><text x="105" y="755" class="label">GPIO</text><text x="105" y="781" class="small">16 switches • 16 LEDs</text>
+    <rect x="82" y="840" width="190" height="100" rx="13" class="box" fill="#2d3342" stroke="#6f7890"/><text x="105" y="874" class="label">128 MiB DDR2</text><text x="105" y="900" class="tiny">16-bit physical interface</text><text x="105" y="923" class="tiny">Nexys on-board memory</text>
+  </g>
+
+  <!-- FPGA wrapper -->
+  <rect x="338" y="145" width="1525" height="850" rx="25" fill="#0b1d2d" stroke="#4a7188" stroke-width="2.2"/>
+  <text x="365" y="178" class="section">XC7A100T FPGA — veerwolf_nexys_a7</text>
+
+  <!-- clocks -->
+  <rect x="370" y="210" width="280" height="120" rx="13" class="box" fill="#29254b" stroke="#7d6cc7"/>
+  <text x="395" y="242" class="label">Clock / Reset Tree</text>
+  <text x="395" y="269" class="tiny">LiteDRAM PLL → user_clk 100 MHz</text>
+  <text x="395" y="295" class="tiny">clk_gen_nexys → clk_core 40 MHz</text>
+  <path d="M272 276H370" class="clock"/>
+
+  <!-- debug -->
+  <rect x="370" y="370" width="280" height="130" rx="13" class="box" fill="#283247" stroke="#7388a0"/>
+  <text x="395" y="404" class="label">Official dmi_wrapper</text>
+  <text x="395" y="432" class="small">JTAG TAP + request synchronizers</text>
+  <text x="395" y="458" class="small">DMI register transport</text>
+  <text x="395" y="482" class="micro">Shared source path for EH1 / EH2 / EL2</text>
+  <path d="M272 400H370" class="wire2"/>
+
+  <!-- core -->
+  <rect x="700" y="210" width="500" height="495" rx="20" fill="url(#core)" stroke="#38bfd0" stroke-width="2.5"/>
+  <text x="730" y="247" class="section">VeeR EH2 1.4 CORE COMPLEX</text>
+  <text x="730" y="273" class="tiny">RV32IMC • dual-hart • fast interrupt redirect • I-cache disabled</text>
+  <rect x="730" y="300" width="205" height="105" rx="13" class="box" fill="#123047"/><text x="754" y="334" class="label">Hart 0</text><text x="754" y="360" class="small">Starts after reset</text><text x="754" y="384" class="micro">Fetch / decode / execute / LSU</text>
+  <rect x="965" y="300" width="205" height="105" rx="13" class="box" fill="#123047"/><text x="989" y="334" class="label">Hart 1</text><text x="989" y="360" class="tiny">MHARTSTART CSR 0x7FC</text><text x="989" y="384" class="micro">Shared reset vector • mhartid=1</text>
+  <rect x="730" y="430" width="205" height="105" rx="13" class="box" fill="#124759"/><text x="754" y="464" class="label">ICCM — 64 KiB</text><text x="754" y="491" class="mono">0xEE000000</text><text x="754" y="515" class="tiny">4 banks • ECC</text>
+  <rect x="965" y="430" width="205" height="105" rx="13" class="box" fill="#124759"/><text x="989" y="464" class="label">DCCM — 32 KiB</text><text x="989" y="491" class="mono">0xF0040000</text><text x="989" y="515" class="tiny">4 banks • ECC • STBUF=4</text>
+  <rect x="730" y="560" width="205" height="105" rx="13" class="box" fill="#5a3d28" stroke="#d79a5b"/><text x="754" y="594" class="label">Shared PIC</text><text x="754" y="621" class="mono">0xF00C0000</text><text x="754" y="642" class="micro">128 sources • per-hart delegation</text>
+  <rect x="965" y="560" width="205" height="105" rx="13" class="box" fill="#243852"/><text x="989" y="594" class="label">Debug Module</text><text x="989" y="621" class="small">4 hardware triggers</text><text x="989" y="645" class="tiny">DMI abstract commands</text>
+  <path d="M650 435H680V195H1068V560" class="wire"/>
+
+  <!-- AXI masters and interconnect -->
+  <rect x="1240" y="220" width="235" height="215" rx="13" class="box" fill="#13324a"/>
+  <text x="1265" y="253" class="label">EH2 AXI Masters</text>
+  <rect x="1265" y="275" width="185" height="39" rx="8" fill="#0d6574"/><text x="1285" y="301" class="tiny">IFU AXI • read-only • ID 4</text>
+  <rect x="1265" y="326" width="185" height="39" rx="8" fill="#0d6574"/><text x="1285" y="352" class="tiny">LSU AXI • read/write • ID 4</text>
+  <rect x="1265" y="377" width="185" height="39" rx="8" fill="#0d6574"/><text x="1285" y="403" class="tiny">System Bus AXI • ID 1</text>
+  <path d="M1200 325H1240" class="wire"/>
+  <rect x="1515" y="220" width="300" height="215" rx="18" fill="url(#bus)" stroke="#62d8cf" stroke-width="2.2"/>
+  <text x="1543" y="257" class="section">AXI4 INTERCONNECT</text>
+  <text x="1543" y="286" class="small">3 masters → 2 address regions</text>
+  <rect x="1543" y="313" width="244" height="48" rx="8" fill="#123047"/><text x="1563" y="343" class="mono">RAM  0x00000000–07FFFFFF</text>
+  <rect x="1543" y="374" width="244" height="48" rx="8" fill="#123047"/><text x="1563" y="404" class="mono">I/O  0x80000000–80003FFF</text>
+  <path d="M1475 328H1515" class="wire"/>
+
+  <!-- memory path -->
+  <rect x="1370" y="480" width="225" height="105" rx="13" class="box" fill="#16384c"/>
+  <text x="1395" y="515" class="label">AXI CDC FIFO</text>
+  <text x="1395" y="542" class="micro">Gray-pointer asynchronous FIFOs</text>
+  <text x="1395" y="566" class="tiny">40 MHz ↔ 100 MHz</text>
+  <rect x="1640" y="480" width="175" height="105" rx="13" class="box" fill="#394331" stroke="#88a965"/>
+  <text x="1665" y="515" class="label">LiteDRAM</text>
+  <text x="1665" y="542" class="small">AXI memory port</text>
+  <text x="1665" y="566" class="micro">PHY + init/BIST status</text>
+  <path d="M1665 435V460H1483V480" class="wire"/>
+  <path d="M1595 532H1640" class="wire2"/>
+  <path d="M1640 560H1615V890H272" class="wire2"/>
+
+  <!-- peripheral path -->
+  <rect x="1240" y="625" width="220" height="92" rx="13" class="box" fill="#18364a"/>
+  <text x="1265" y="660" class="label">AXI-to-Wishbone</text>
+  <text x="1265" y="688" class="small">64-bit AXI → 32-bit WB</text>
+  <path d="M1690 435V610H1460V655" class="wire"/>
+  <rect x="1500" y="625" width="315" height="92" rx="18" fill="#4b3558" stroke="#a57db2" stroke-width="2"/>
+  <text x="1527" y="660" class="label">Wishbone Interconnect</text>
+  <text x="1527" y="688" class="small">Address decode + peripheral fan-out</text>
+  <path d="M1460 671H1500" class="wire2"/>
+
+  <g>
+    <rect x="370" y="770" width="215" height="145" rx="13" class="box" fill="#1d3546"/><text x="395" y="805" class="label">Boot ROM</text><text x="395" y="833" class="mono">0x80000000</text><text x="395" y="858" class="tiny">4 KiB first-stage loader</text><text x="395" y="884" class="micro">Instruction-side boot target</text>
+    <rect x="615" y="770" width="215" height="145" rx="13" class="box" fill="#1d3546"/><text x="640" y="805" class="label">System Controller</text><text x="640" y="833" class="mono">0x80001000</text><text x="640" y="858" class="small">mtime • GPIO • NMI</text><text x="640" y="881" class="micro">RAM status • IRQ timer</text><text x="640" y="900" class="micro">CLK_FREQ_HZ</text>
+    <rect x="860" y="770" width="215" height="145" rx="13" class="box" fill="#1d3546"/><text x="885" y="805" class="label">Simple SPI</text><text x="885" y="833" class="mono">0x80001040</text><text x="885" y="858" class="small">Boot / data flash</text><text x="885" y="884" class="tiny">Interrupt → EH2 PIC</text>
+    <rect x="1105" y="770" width="215" height="145" rx="13" class="box" fill="#1d3546"/><text x="1130" y="805" class="label">UART 16550</text><text x="1130" y="833" class="mono">0x80002000</text><text x="1130" y="858" class="small">8-bit Wishbone slave</text><text x="1130" y="884" class="tiny">Interrupt → EH2 PIC</text>
+  </g>
+  <path d="M1658 717V744H478V770M723 744V770M968 744V770M1213 744V770" fill="none" stroke="#55d7e5" stroke-width="3"/>
+  <path d="M723 770V724H785V665" class="irq"/>
+  <path d="M968 770V710H815V665" class="irq"/>
+  <path d="M1213 770V696H845V665" class="irq"/>
+
+  <!-- I/O links -->
+  <path d="M272 525H322V942H1213V915" class="wire2"/>
+  <path d="M272 644H310V958H968V915" class="wire2"/>
+  <path d="M272 763H338V842H615" class="wire2"/>
+
+  <!-- clock distribution -->
+  <path d="M650 270H700" class="clock"/><path d="M595 330V190H1727V480" class="clock"/>
+  <text x="370" y="982" class="tiny">Solid cyan: bus/data path   •   Orange dashed: interrupt   •   Purple dashed: clock/reset domain</text>
+  <text x="1300" y="982" class="micro">RTL sources: veerwolf_nexys.v • veerwolf_core.v • veer_eh2_wrapper.sv • veerwolf.core</text>
+</svg>
