@@ -55,7 +55,6 @@ set_property ASYNC_REG TRUE [get_cells -quiet -hierarchical -regexp {.*clk_gen/r
 set_property ASYNC_REG TRUE [get_cells -quiet -hierarchical -regexp {.*clk_gen/hold_rst_sync_reg\[[0-1]\]$}]
 set_property ASYNC_REG TRUE [get_cells -quiet -hierarchical -regexp {.*mig_axi_resetn_sync_reg\[[0-2]\]$}]
 set_property ASYNC_REG TRUE [get_cells -quiet -hierarchical -regexp {.*mig_init_done_sync_reg\[[0-1]\]$}]
-set_property ASYNC_REG TRUE [get_cells -regexp {.*tap/i_dmi_jtag_to_core_sync/(rden|wren)_reg\[[0-2]\]$}]
 set_false_path -to [get_pins -quiet -of_objects [get_cells -quiet -hierarchical -regexp {.*clk_gen/hold_rst_sync_reg\[0\]$}] -filter {REF_PIN_NAME == D}]
 set_false_path -to [get_pins -quiet -of_objects [get_cells -quiet -hierarchical -regexp {.*mig_init_done_sync_reg\[0\]$}] -filter {REF_PIN_NAME == D}]
 set_false_path -from [get_ports {i_sw[*]}] -to [get_pins -quiet -of_objects [get_cells -quiet -regexp {sw_r_reg\[[0-7]\]}] -filter {REF_PIN_NAME == D}]
