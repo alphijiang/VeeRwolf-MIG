@@ -1,7 +1,7 @@
 VeeRwolf
 ========
 
-
+#Only tested on Genesys2
 This revision uses the `alphijiang` EH1/EL2/EH2 core forks. EH2 hardware
 configuration is generated from `configs/veer.config` through the
 `veerwolf.core` board profile; the official EH2 VLNV is `VeeR_EH2:1.4`.
