@@ -1,49 +1,37 @@
 // SPDX-License-Identifier: Apache-2.0
-// Copyright 2019 Western Digital Corporation or its affiliates.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Nexys4 DDR clock/reset generation for the MIG target.
 
-//********************************************************************************
-// $Id$
-//
-// Function: VeeRwolf Nexys A7 clock generation
-// Comments:
-//
-//********************************************************************************
+module clk_gen_nexys_mig
+  #(parameter CPU_TYPE = "")
+   (input  wire i_clk,
+    input  wire i_rst,
+    input  wire i_hold_rst,
+    output wire o_clk_mig,
+    output wire o_clk_core,
+    output wire o_rst_core);
 
-module clk_gen_nexys
-  (input  i_clk,
-   input      i_rst,
-   output     o_clk_core,
-   output     o_rst_core);
+   wire clkfb;
+   wire locked;
+   wire clk_mig_unbuf;
+   wire clk_core_unbuf;
+   (* ASYNC_REG = "TRUE", SHREG_EXTRACT = "NO" *) reg [1:0] hold_rst_sync = 2'b11;
+   (* ASYNC_REG = "TRUE", SHREG_EXTRACT = "NO" *) reg [2:0] reset_sync = 3'b111;
 
-   parameter CPU_TYPE = "";
-
-   wire   clkfb;
-   wire   locked;
-   (* ASYNC_REG = "TRUE" *) reg [2:0] reset_sync;
-
+   // 100 MHz input, 1000 MHz VCO.
+   // CLKOUT0: 200 MHz MIG system/reference clock.
+   // CLKOUT1: EL2 25 MHz, EH2 40 MHz, EH1 50 MHz.
    PLLE2_BASE
      #(.BANDWIDTH("OPTIMIZED"),
-       .CLKFBOUT_MULT(16),
-       .CLKIN1_PERIOD(10.0), //100MHz
-       .CLKOUT0_DIVIDE((CPU_TYPE == "EL2") ? 64 :
-                       (CPU_TYPE == "EH2") ? 40 : 32),
+       .CLKFBOUT_MULT(10),
+       .CLKIN1_PERIOD(10.0),
+       .CLKOUT0_DIVIDE(5),
+       .CLKOUT1_DIVIDE((CPU_TYPE == "EL2") ? 40 :
+                       (CPU_TYPE == "EH2") ? 25 : 20),
        .DIVCLK_DIVIDE(1),
        .STARTUP_WAIT("FALSE"))
-   PLLE2_BASE_inst
-     (.CLKOUT0(o_clk_core),
-      .CLKOUT1(),
+   pll
+     (.CLKOUT0(clk_mig_unbuf),
+      .CLKOUT1(clk_core_unbuf),
       .CLKOUT2(),
       .CLKOUT3(),
       .CLKOUT4(),
@@ -55,10 +43,26 @@ module clk_gen_nexys
       .RST(i_rst),
       .CLKFBIN(clkfb));
 
-   // Assert reset immediately when the PLL loses lock, then release it only
-   // after three valid core-clock edges.
-   always @(posedge o_clk_core or negedge locked) begin
-      if (!locked)
+   BUFG mig_clk_buf
+     (.I(clk_mig_unbuf),
+      .O(o_clk_mig));
+
+   BUFG core_clk_buf
+     (.I(clk_core_unbuf),
+      .O(o_clk_core));
+
+   // MIG UI reset is asynchronous to the independently generated core clock.
+   always @(posedge o_clk_core or posedge i_rst) begin
+      if (i_rst)
+        hold_rst_sync <= 2'b11;
+      else
+        hold_rst_sync <= {hold_rst_sync[0], i_hold_rst};
+   end
+
+   always @(posedge o_clk_core or posedge i_rst) begin
+      if (i_rst)
+        reset_sync <= 3'b111;
+      else if (!locked || hold_rst_sync[1])
         reset_sync <= 3'b111;
       else
         reset_sync <= {reset_sync[1:0], 1'b0};

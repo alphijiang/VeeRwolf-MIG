@@ -1,6 +1,6 @@
 CAPI=2:
 
-name : :veerwolf:mig:0
+name : :veerwolf:genesys2_mig:0
 
 description : Fixed generated AMD MIG 7-series + AXI Clock Converter for Digilent Genesys 2
 

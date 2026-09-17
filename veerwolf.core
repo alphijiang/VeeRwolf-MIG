@@ -69,7 +69,7 @@ filesets:
       - data/veerwolf_nexys.xdc : {file_type : xdc}
       - rtl/clk_gen_nexys.v : {file_type : verilogSource}
       - rtl/veerwolf_nexys.v    : {file_type : systemVerilogSource}
-    depend : [":veerwolf:litedram"]
+    depend : [":veerwolf:nexys_a7_mig:0"]
 
   nexys_a7_upstream_waiver:
     files: [data/vivado_waiver.tcl : {file_type : tclSource}]
@@ -79,7 +79,7 @@ filesets:
       - data/veerwolf_genesys2.xdc : {file_type : xdc}
       - rtl/clk_gen_genesys2.v : {file_type : verilogSource}
       - rtl/veerwolf_genesys2.v : {file_type : systemVerilogSource}
-    depend : [":veerwolf:mig:0"]
+    depend : [":veerwolf:genesys2_mig:0"]
 
   nexys_video_files:
     files :

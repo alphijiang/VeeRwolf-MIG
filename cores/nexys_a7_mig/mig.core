@@ -1,0 +1,15 @@
+CAPI=2:
+
+name : :veerwolf:nexys_a7_mig:0
+
+description : Digilent Nexys4 DDR C.1 MIG 7-series and AXI Clock Converter
+
+filesets:
+  core:
+    files:
+      - mig.prj : {file_type : user}
+      - mig.tcl : {file_type : tclSource}
+
+targets:
+  default:
+    filesets : [core]
