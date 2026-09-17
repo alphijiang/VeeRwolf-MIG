@@ -20,8 +20,8 @@ set_clock_groups -asynchronous \
 # Match the existing three-stage request synchronizers in the official
 # Cores-VeeR DMI wrapper. This property guides placement and does not waive
 # CDC analysis.
-set_property ASYNC_REG TRUE [get_cells -regexp \
-    {.*tap/i_dmi_jtag_to_core_sync/(rden|wren)_reg\[[0-2]\]$}]
+#set_property ASYNC_REG TRUE [get_cells -regexp \
+#    {.*tap/i_dmi_jtag_to_core_sync/(rden|wren)_reg\[[0-2]\]$}]
 
 # Non-DDR board I/O. R19 intentionally has no internal PULLUP.
 set_property -dict {PACKAGE_PIN R19 IOSTANDARD LVCMOS33} [get_ports cpu_resetn]
