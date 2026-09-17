@@ -370,6 +370,7 @@ generate:
       args:
         - -target=default_mt
         - -unset=assert_on
+        - -set=fpga_optimize=1
         - -set=dccm_size=32
         - -set=dccm_num_banks=4
         - -set=icache_enable=0
