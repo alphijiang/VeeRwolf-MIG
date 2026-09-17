@@ -34,7 +34,7 @@
   <rect width="1920" height="1080" fill="url(#bg)"/>
   <path d="M0 118H1920" stroke="#2b5268" stroke-width="1"/>
   <text x="74" y="68" class="title">VeeRwolf EH2 — Nexys A7 / Nexys 4 DDR System Architecture</text>
-  <text x="76" y="99" class="subtitle">RTL-derived implementation view • VeeR EH2 1.4 dual-hart • 40 MHz core • 100 MHz DDR user domain</text>
+  <text x="76" y="99" class="subtitle">RTL-derived implementation view • VeeR EH2 1.4 dual-hart • 25 MHz core • 100 MHz DDR user domain</text>
 
   <!-- external I/O -->
   <rect x="55" y="160" width="245" height="815" rx="20" fill="#0a1b2b" stroke="#33566d" stroke-width="2"/>
@@ -56,7 +56,7 @@
   <rect x="370" y="210" width="280" height="120" rx="13" class="box" fill="#29254b" stroke="#7d6cc7"/>
   <text x="395" y="242" class="label">Clock / Reset Tree</text>
   <text x="395" y="269" class="tiny">LiteDRAM PLL → user_clk 100 MHz</text>
-  <text x="395" y="295" class="tiny">clk_gen_nexys → clk_core 40 MHz</text>
+  <text x="395" y="295" class="tiny">clk_gen_nexys → clk_core 25 MHz</text>
   <path d="M272 276H370" class="clock"/>
 
   <!-- debug -->
@@ -97,7 +97,7 @@
   <rect x="1370" y="480" width="225" height="105" rx="13" class="box" fill="#16384c"/>
   <text x="1395" y="515" class="label">AXI CDC FIFO</text>
   <text x="1395" y="542" class="micro">Gray-pointer asynchronous FIFOs</text>
-  <text x="1395" y="566" class="tiny">40 MHz ↔ 100 MHz</text>
+  <text x="1395" y="566" class="tiny">25 MHz ↔ 100 MHz</text>
   <rect x="1640" y="480" width="175" height="105" rx="13" class="box" fill="#394331" stroke="#88a965"/>
   <text x="1665" y="515" class="label">LiteDRAM</text>
   <text x="1665" y="542" class="small">AXI memory port</text>

@@ -68,7 +68,7 @@ module veerwolf_genesys2
    wire mig_axi_resetn = mig_axi_resetn_sync[2];
 
    // ----------------------------------------------------------------------
-   // VeeR core domain: derive 40/25/50 MHz from MIG ui_clk (~225 MHz).
+   // VeeR core domain: derive 25/25/50 MHz from MIG ui_clk (~225 MHz).
    // ----------------------------------------------------------------------
    wire clk_core;
    wire rst_core;

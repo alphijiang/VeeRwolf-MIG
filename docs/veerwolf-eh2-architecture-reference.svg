@@ -37,9 +37,9 @@
   <rect x="660" y="145" width="575" height="65" rx="18" fill="url(#head)"/><text x="688" y="186" class="h">CLOCK AND BUS DOMAINS</text>
   <rect x="690" y="244" width="160" height="74" class="row"/><text x="713" y="274" class="l">Board clock</text><text x="713" y="298" class="m">100 MHz</text>
   <rect x="905" y="244" width="220" height="74" class="row"/><text x="928" y="274" class="l">LiteDRAM PLL / PHY</text><text x="928" y="298" class="m">user_clk = 100 MHz</text>
-  <rect x="905" y="356" width="220" height="74" class="row"/><text x="928" y="386" class="l">EH2 core domain</text><text x="928" y="410" class="m">clk_core = 40 MHz</text>
+  <rect x="905" y="356" width="220" height="74" class="row"/><text x="928" y="386" class="l">EH2 core domain</text><text x="928" y="410" class="m">clk_core = 25 MHz</text>
   <path d="M850 281H905" stroke="#55d7e5" stroke-width="4"/><path d="M1015 318V356" stroke="#b998ff" stroke-width="4"/>
-  <text x="690" y="470" class="t">• AXI CDC uses asynchronous Gray-pointer FIFOs between 40 and 100 MHz.</text>
+  <text x="690" y="470" class="t">• AXI CDC uses asynchronous Gray-pointer FIFOs between 25 and 100 MHz.</text>
   <text x="690" y="497" class="t">• IFU, LSU and System Bus feed one generated AXI4 interconnect.</text>
   <text x="690" y="524" class="x">CLOCK_PERIOD=100 is EH2 generator/testbench metadata, not the FPGA clock constraint.</text>
 
