@@ -19,14 +19,14 @@ module clk_gen_nexys_mig
 
    // 100 MHz input, 1000 MHz VCO.
    // CLKOUT0: 200 MHz MIG system/reference clock.
-   // CLKOUT1: EL2 25 MHz, EH2 40 MHz, EH1 50 MHz.
+   // CLKOUT1: EL2 25 MHz, EH2 25 MHz, EH1 50 MHz.
    PLLE2_BASE
      #(.BANDWIDTH("OPTIMIZED"),
        .CLKFBOUT_MULT(10),
        .CLKIN1_PERIOD(10.0),
        .CLKOUT0_DIVIDE(5),
        .CLKOUT1_DIVIDE((CPU_TYPE == "EL2") ? 40 :
-                       (CPU_TYPE == "EH2") ? 25 : 20),
+                       (CPU_TYPE == "EH2") ? 40 : 20),
        .DIVCLK_DIVIDE(1),
        .STARTUP_WAIT("FALSE"))
    pll
