@@ -25,6 +25,11 @@ set_clock_groups -asynchronous \
 set_property ASYNC_REG TRUE [get_cells -regexp \
     {.*tap/i_dmi_jtag_to_core_sync/(rden|wren)_reg\[[0-2]\]$}]
 
+# MIG status/reset are asynchronous to clk_core. Cut only the D pin of the
+# first synchronizer stage; keep the remaining stages fully timed.
+set_false_path -to [get_pins {mig_init_done_sync_reg[0]/D}]
+set_false_path -to [get_pins {clk_gen/hold_rst_sync_reg[0]/D}]
+
 set_property -dict { PACKAGE_PIN E3    IOSTANDARD LVCMOS33 } [get_ports { clk }];
 
 set_property -dict { PACKAGE_PIN C12   IOSTANDARD LVCMOS33 } [get_ports { rstn }];

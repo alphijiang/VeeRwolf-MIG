@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2019 Western Digital Corporation or its affiliates.
 // V52 Genesys2 integration:
-//   VeeR EH2 40 MHz AXI64 -> AMD AXI Clock Converter -> MIG AXI64 -> DDR3.
+//   VeeR EH2 25 MHz AXI64 -> AMD AXI Clock Converter -> MIG AXI64 -> DDR3.
 // The DDR3 PHY/pin/timing configuration is derived from Digilent's validated
 // Genesys2 MIG project.  Only the MIG AXI user-side width/ID/narrow-burst
 // settings differ from the V51 standalone golden configuration.
@@ -366,7 +366,7 @@ module veerwolf_genesys2
    veerwolf_core
      #(.bootrom_file (bootrom_file),
        .clk_freq_hz  ((cpu_type == "EL2") ? 32'd25_000_000 :
-                      (cpu_type == "EH2") ? 32'd40_000_000 : 32'd50_000_000))
+                      (cpu_type == "EH2") ? 32'd25_000_000 : 32'd50_000_000))
    veerwolf
      (.clk  (clk_core),
       .rstn (soc_resetn),

@@ -25,7 +25,7 @@ module clk_gen_genesys2
    // 1111 ps DDR3 clock period and 4:1 PHY ratio.
    //
    // PLL VCO = 225 MHz / 3 * 16 = 1200 MHz
-   // EH2: 1200 / 30 = 40 MHz
+   // EH2: 1200 / 48 = 25 MHz
    // EL2: 1200 / 48 = 25 MHz
    // EH1: 1200 / 24 = 50 MHz
    PLLE2_BASE
@@ -33,7 +33,7 @@ module clk_gen_genesys2
        .CLKFBOUT_MULT(16),
        .CLKIN1_PERIOD(4.444),
        .CLKOUT0_DIVIDE((CPU_TYPE == "EL2") ? 48 :
-                       (CPU_TYPE == "EH2") ? 30 : 24),
+                       (CPU_TYPE == "EH2") ? 48 : 24),
        .DIVCLK_DIVIDE(3),
        .STARTUP_WAIT("FALSE"))
    PLLE2_BASE_inst
